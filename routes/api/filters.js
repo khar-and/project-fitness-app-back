@@ -1,8 +1,8 @@
 const express = require("express");
-const ctrl = require("../../controllers/products");
+const ctrl = require("../../controllers/filters");
 
 const router = express.Router();
 
-router.get("/", ctrl.getAllProducts);
+router.get("/", ctrl.getAllFilters);
 
 module.exports = router;

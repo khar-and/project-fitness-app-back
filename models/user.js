@@ -21,11 +21,7 @@ const userSchema = new Schema(
       unique: true,
       match: emailRegexp,
     },
-    // subscription: {
-    //   type: String,
-    //   enum: ["starter", "pro", "business"],
-    //   default: "starter",
-    // },
+
     owner: {
       type: Schema.Types.ObjectId,
       ref: "user",
@@ -46,8 +42,8 @@ const registerSchema = Joi.object({
 });
 
 const loginSchema = Joi.object({
-  email: Joi.string().email().required(),
-  password: Joi.string().required(),
+  email: Joi.string().pattern(emailRegexp).required(),
+  password: Joi.string().min(6).required(),
 });
 
 const schemas = {
