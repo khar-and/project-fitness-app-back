@@ -18,13 +18,21 @@ const register = async (req, res) => {
   }
   // Перед збкріганням Юзера - хешуємо пароль
   const hashPassword = await bcrypt.hash(password, 10);
+  // формуємо токен
+  const payload = {
+    name,
+    email,
+  };
+  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "23d" });
 
   const newUser = await User.create({
     name,
     email,
     password: hashPassword,
+    token,
   });
   res.status(201).json({
+    token,
     user: {
       name: newUser.name,
       email: newUser.email,
@@ -50,7 +58,7 @@ const login = async (req, res) => {
     id: user._id,
   };
 
-  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "23h" });
+  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "23d" });
   await User.findByIdAndUpdate(user._id, { token });
 
   const { subscription } = user;
@@ -81,9 +89,23 @@ const logout = async (req, res) => {
   });
 };
 
+// Контролер addAvatar
+const addAvatar = async (req, res) => {
+  if (!req.file) {
+    res.status(400).json({ message: "File for upload is missing" });
+  }
+  const { _id } = req.user;
+  const avatarURL = req.file.path;
+  await User.findByIdAndUpdate(_id, { avatarURL });
+  res.status(200).json({
+    avatarURL,
+  });
+};
+
 module.exports = {
   register: ctrlWrapper(register),
   login: ctrlWrapper(login),
   getCurrent: ctrlWrapper(getCurrent),
   logout: ctrlWrapper(logout),
+  addAvatar: ctrlWrapper(addAvatar),
 };

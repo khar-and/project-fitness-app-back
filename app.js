@@ -3,6 +3,7 @@ const logger = require("morgan");
 const cors = require("cors");
 const dotenv = require("dotenv");
 
+const categoriesRouter = require("./routes/api/categories.js");
 const exerciseRouter = require("./routes/api/exercises.js");
 const filtersRouter = require("./routes/api/filters.js");
 const productsRouter = require("./routes/api/products");
@@ -23,6 +24,7 @@ app.use("/api/users", authRouter);
 app.use("/api/exercises", exerciseRouter);
 app.use("/api/filters", filtersRouter);
 app.use("/api/products", productsRouter);
+app.use("/api/categories", categoriesRouter);
 app.use("/api/contacts", contactsRouter);
 
 app.use((req, res) => {

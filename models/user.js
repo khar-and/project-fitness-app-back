@@ -21,7 +21,10 @@ const userSchema = new Schema(
       unique: true,
       match: emailRegexp,
     },
-
+    avatarURL: {
+      type: String,
+      // required: true,
+    },
     owner: {
       type: Schema.Types.ObjectId,
       ref: "user",
