@@ -4,6 +4,10 @@ const handleMongooseError = require("../helpers/handleMongooseError");
 
 const emailRegexp = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
 
+const bloodList = ["1", "2", "3", "4"];
+const sexList = ["male", "female"];
+const levelActivityList = ["1", "2", "3", "4", "5"];
+
 const userSchema = new Schema(
   {
     name: {
@@ -29,6 +33,33 @@ const userSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "user",
     },
+    height: {
+      type: Number,
+    },
+    currentWeight: {
+      type: Number,
+    },
+    desiredWeight: {
+      type: Number,
+    },
+    birthday: {
+      type: Date,
+    },
+    blood: {
+      type: String,
+      enum: bloodList,
+    },
+    bmr: {
+      type: Number,
+    },
+    sex: {
+      type: String,
+      enum: sexList,
+    },
+    levelActivity: {
+      type: String,
+      enum: levelActivityList,
+    },
     token: String,
   },
   { versionKey: false }
@@ -49,9 +80,27 @@ const loginSchema = Joi.object({
   password: Joi.string().min(6).required(),
 });
 
+const userSettingsSchema = Joi.object({
+  height: Joi.number().min(150).required(),
+  currentWeight: Joi.number().min(35).required(),
+  desiredWeight: Joi.number().min(35).required(),
+  birthday: Joi.string().required(),
+
+  blood: Joi.string()
+    .valid(...bloodList)
+    .required(),
+  sex: Joi.string()
+    .valid(...sexList)
+    .required(),
+  levelActivity: Joi.string()
+    .valid(...levelActivityList)
+    .required(),
+});
+
 const schemas = {
   registerSchema,
   loginSchema,
+  userSettingsSchema,
 };
 
 // Створюємо модель

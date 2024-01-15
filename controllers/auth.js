@@ -102,10 +102,39 @@ const addAvatar = async (req, res) => {
   });
 };
 
+// Контроллер Profile Settings
+const setProfileSettings = async (req, res) => {
+  const { _id } = req.user;
+  const levelActivityCof = { 1: 1.2, 2: 1.375, 3: 1.55, 4: 1.725, 5: 1.9 };
+  const calcBMR = ({ sex, height, currentWeight, levelActivity, birthday }) => {
+    const age =
+      new Date().getFullYear() - new Date(Number(birthday)).getFullYear();
+    if (sex === "male") {
+      return (
+        (10 * Number(currentWeight) + 6.25 * Number(height) - 5 * age + 5) *
+        levelActivityCof[levelActivity]
+      );
+    } else {
+      return (
+        (10 * Number(currentWeight) + 6.25 * Number(height) - 5 * age - 161) *
+        levelActivityCof[levelActivity]
+      );
+    }
+  };
+  const bmr = Math.floor(calcBMR(req.body));
+
+  const settings = await User.findByIdAndUpdate(_id, { ...req.body, bmr });
+  console.log(settings);
+  res.status(200).json({
+    settings,
+  });
+};
+
 module.exports = {
   register: ctrlWrapper(register),
   login: ctrlWrapper(login),
   getCurrent: ctrlWrapper(getCurrent),
   logout: ctrlWrapper(logout),
   addAvatar: ctrlWrapper(addAvatar),
+  setProfileSettings: ctrlWrapper(setProfileSettings),
 };
