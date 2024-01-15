@@ -3,34 +3,33 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").configDotenv();
 
-const { ctrlWrapper, HttpError } = require("../helpers");
+const { ctrlWrapper, HttpError, calcBMR } = require("../helpers");
 
 const { SECRET_KEY } = process.env;
 
 // Контролер реєстрації
 const register = async (req, res) => {
   const { name, email, password } = req.body;
-  // Якщо в базі вже є такий емейл - перевіряємо і надсилаємо унікальне повідомлення
 
   const user = await User.findOne({ email });
   if (user) {
     throw HttpError(409, "Email in use");
   }
-  // Перед збкріганням Юзера - хешуємо пароль
+
   const hashPassword = await bcrypt.hash(password, 10);
-  // формуємо токен
-  const payload = {
-    name,
-    email,
-  };
-  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "23d" });
 
   const newUser = await User.create({
     name,
     email,
     password: hashPassword,
-    token,
   });
+
+  const payload = {
+    id: newUser._id,
+  };
+  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "23d" });
+  await User.findByIdAndUpdate(newUser._id, { token });
+
   res.status(201).json({
     token,
     user: {
@@ -73,10 +72,13 @@ const login = async (req, res) => {
 
 // Контролер Current
 const getCurrent = async (req, res) => {
-  const { email, subscription } = req.user;
+  const { email } = req.user;
+  const result = await User.findOne({ email });
+  if (!result) {
+    HttpError(404, "User not found");
+  }
   res.status(200).json({
-    email,
-    subscription,
+    result,
   });
 };
 
@@ -105,28 +107,14 @@ const addAvatar = async (req, res) => {
 // Контроллер Profile Settings
 const setProfileSettings = async (req, res) => {
   const { _id } = req.user;
-  const levelActivityCof = { 1: 1.2, 2: 1.375, 3: 1.55, 4: 1.725, 5: 1.9 };
-  const calcBMR = ({ sex, height, currentWeight, levelActivity, birthday }) => {
-    const age =
-      new Date().getFullYear() - new Date(Number(birthday)).getFullYear();
-    if (sex === "male") {
-      return (
-        (10 * Number(currentWeight) + 6.25 * Number(height) - 5 * age + 5) *
-        levelActivityCof[levelActivity]
-      );
-    } else {
-      return (
-        (10 * Number(currentWeight) + 6.25 * Number(height) - 5 * age - 161) *
-        levelActivityCof[levelActivity]
-      );
-    }
-  };
   const bmr = Math.floor(calcBMR(req.body));
+  await User.findByIdAndUpdate(_id, {
+    ...req.body,
+    bmr,
+  });
 
-  const settings = await User.findByIdAndUpdate(_id, { ...req.body, bmr });
-  console.log(settings);
   res.status(200).json({
-    settings,
+    message: "Data saved successfully",
   });
 };
 
