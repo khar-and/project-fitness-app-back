@@ -26,15 +26,17 @@ const productSchema = new Schema(
 );
 // allowed, category, query
 const Product = model("product", productSchema);
+
 const filterSchema = Joi.object({
-  allowed: Joi.boolean().required().allow('all'),
-  category: Joi.string().allow(''),
-  query: Joi.string().allow(''),
+  allowed: Joi.boolean().required().allow("all"),
+  category: Joi.string().allow(""),
+  query: Joi.string().allow(""),
 });
+
 const schemas = {
-  filterSchema
-}
+  filterSchema,
+};
 module.exports = {
   Product,
-  schemas
+  schemas,
 };
