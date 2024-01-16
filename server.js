@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const app = require("./app");
+mongoose.set("strictQuery", false);
 
 // Підключення до БД
 const { DB_HOST, PORT } = process.env;
