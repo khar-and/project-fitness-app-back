@@ -1,0 +1,579 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Swagger Documentation (Fitness-App)",
+    "description": "Showing off swagger-ui-express",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "consumes": ["application/json", " multipart/form-data"],
+  "produces": ["application/json"],
+  "servers": [
+    { "url": "https://project-fitness-app-back.onrender.com" },
+    { "url": "http://localhost:3000" }
+  ],
+  "tags": [
+    {
+      "name": "User",
+      "description": "Authorization endpoints"
+    },
+    {
+      "name": "Profile Settings",
+      "description": "Personal user settings"
+    },
+    {
+      "name": "Dairy",
+      "description": "НЕ ПРАЦЮЄ і НЕ ОПИСАНО"
+    },
+    {
+      "name": "Exercises",
+      "description": "Endpoint that returns all types of body parts, muscles and equipment existing in the database (DB), taking into account the types of training."
+    },
+    {
+      "name": "Products",
+      "description": "Returns all product categories existing in the database (DB) and all products that are allowed for consumption by his blood type or, on the contrary, prohibited."
+    }
+  ],
+
+  "paths": {
+    "/api/users/register": {
+      "post": {
+        "tags": ["User"],
+        "summary": "User registration",
+        "parameters": [],
+        "security": [],
+        "requestBody": {
+          "description": "Registration's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegistrationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "New user registered",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistrationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          },
+          "409": {
+            "description": "Email in use"
+          }
+        }
+      }
+    },
+    "/api/users/login": {
+      "post": {
+        "tags": ["User"],
+        "summary": "User login",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Login's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Login successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          }
+        }
+      }
+    },
+    "/api/users/logout": {
+      "post": {
+        "tags": ["User"],
+        "summary": "User logout",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "Logout"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/users/current": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Get information about current user",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "201": {
+            "description": "Get information successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurrentResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Bad request / User not found"
+          }
+        }
+      }
+    },
+    "/api/users/settings": {
+      "post": {
+        "tags": ["Profile Settings"],
+        "summary": "Save user settings",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Object settings",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SettingsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Data saved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SettingsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          }
+        }
+      }
+    },
+    "/api/users/logout": {
+      "post": {
+        "tags": ["User"],
+        "summary": "User logout",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "Logout"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/exercises/filters": {
+      "get": {
+        "tags": ["Exercises"],
+        "summary": "Get the entire filter exercise database",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "filter",
+            "required": true,
+            "type": "string",
+            "description": "Body parts/Muscles/Equipment"
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+
+        "responses": {
+          "201": {
+            "description": "Get database successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FiltersResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/exercises/exercises": {
+      "get": {
+        "tags": ["Exercises"],
+        "summary": "Get the exercise database with filters and categories",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "filter",
+            "required": true,
+            "type": "string",
+            "description": "Body parts/Muscles/Equipment"
+          },
+          {
+            "in": "query",
+            "name": "category",
+            "required": true,
+            "type": "string",
+            "description": "Shoulders, Waist, Back etc... "
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+
+        "responses": {
+          "201": {
+            "description": "Get database successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExerciseResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/products/blood": {
+      "get": {
+        "tags": ["Products"],
+        "summary": "Працює. Поки що через req.body. НЕ ОПИСАНО.",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "201": {
+            "description": "Get database successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoriesResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/categories": {
+      "get": {
+        "tags": ["Products"],
+        "summary": "Returns all existing product categories in the database",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "201": {
+            "description": "Get database successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoriesResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    }
+  },
+
+  "components": {
+    "schemas": {
+      "RegistrationRequest": {
+        "type": "object",
+        "required": ["name", "email", "password"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "User's name"
+          },
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "qwerty123"
+          }
+        }
+      },
+      "LoginRequest": {
+        "type": "object",
+        "required": ["name", "email"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "User's name"
+          },
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email"
+          }
+        }
+      },
+      "SettingsRequest": {
+        "type": "object",
+        "required": [],
+        "properties": {
+          "height": {
+            "type": "integer",
+            "example": 160
+          },
+          "currentWeight": {
+            "type": "integer",
+            "example": 100
+          },
+          "desiredWeight": {
+            "type": "integer",
+            "example": 80
+          },
+          "birthday": {
+            "type": "date",
+            "example": "923916816990"
+          },
+          "blood": {
+            "type": "string",
+            "example": "2"
+          },
+          "sex": {
+            "type": "string",
+            "example": "female"
+          },
+          "levelActivity": {
+            "type": "string",
+            "example": "3"
+          }
+        }
+      },
+      "RegistrationResponse": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "description": "token"
+          },
+          "user": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "User's name"
+              },
+              "email": {
+                "type": "string",
+                "description": "User's email",
+                "format": "email"
+              },
+              "password": {
+                "type": "string",
+                "description": "User's password",
+                "example": "qwerty123"
+              }
+            }
+          }
+        }
+      },
+      "LoginResponse": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "description": "token"
+          },
+          "user": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "User's name"
+              },
+              "email": {
+                "type": "string",
+                "description": "User's email",
+                "format": "email"
+              }
+            }
+          }
+        }
+      },
+      "CurrentResponse": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "array",
+            "items": {
+              "typeof": ["string", "integer"]
+            }
+          }
+        }
+      },
+      "SettingsResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Data saved successfully"
+          }
+        }
+      },
+      "FiltersResponse": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "description": "Id number",
+                  "example": "650f35ece3f5522fc6396289"
+                },
+                "filter": {
+                  "type": "string",
+                  "description": "Selected filter",
+                  "example": "Body parts"
+                },
+                "name": {
+                  "type": "string",
+                  "example": "back"
+                },
+                "imgURL": {
+                  "type": "string",
+                  "description": "Link",
+                  "example": "https://ftp.goit.study/img/power-pulse/filters/back_wzzphw.jpg"
+                }
+              }
+            }
+          }
+        }
+      },
+      "ExerciseResponse": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "_id": {
+              "type": "string",
+              "description": "Id number",
+              "example": "650f35ece3f5522fc6396289"
+            },
+            "bodyPart": {
+              "type": "string",
+              "example": "upper legs"
+            },
+            "equipment": {
+              "type": "string",
+              "example": "leverage machine"
+            },
+            "gifUrl": {
+              "type": "string",
+              "example": "https://ftp.goit.study/img/power-pulse/gifs/0597.gif",
+              "description": "Link"
+            },
+            "name": {
+              "type": "string",
+              "example": "lever seated hip abduction"
+            },
+            "target": {
+              "type": "string",
+              "example": "abductors"
+            },
+            "burnedCalories": {
+              "type": "integer",
+              "example": 279
+            },
+            "time": {
+              "type": "integer",
+              "example": 3
+            }
+          }
+        }
+      },
+      "CategoriesResponse": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "description": "List of categories"
+        }
+      },
+
+      "ExampleResponse": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "email": {
+              "type": "string",
+              "description": "User's email",
+              "format": "email"
+            },
+            "userId": {
+              "type": "number",
+              "description": "User's id",
+              "example": "32143232436545474"
+            }
+          }
+        },
+        "example": [
+          { "email": "1@gmail.com", "userId": "1" },
+          { "email": "2@gmail.com", "userId": "2" }
+        ]
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

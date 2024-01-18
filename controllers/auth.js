@@ -60,12 +60,12 @@ const login = async (req, res) => {
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "23d" });
   await User.findByIdAndUpdate(user._id, { token });
 
-  const { subscription } = user;
+  const { name } = user;
   res.json({
     token,
     user: {
+      name,
       email,
-      subscription,
     },
   });
 };
