@@ -73,12 +73,13 @@ const login = async (req, res) => {
 // Контролер Current
 const getCurrent = async (req, res) => {
   const { email } = req.user;
-  const result = await User.findOne({ email });
-  if (!result) {
+  const user = await User.findOne({ email });
+  if (!user) {
     HttpError(404, "User not found");
   }
+  console.log(user);
   res.status(200).json({
-    result,
+    user,
   });
 };
 
