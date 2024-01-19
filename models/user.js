@@ -4,9 +4,9 @@ const handleMongooseError = require("../helpers/handleMongooseError");
 
 const emailRegexp = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
 
-const bloodList = ["1", "2", "3", "4"];
+const bloodList = [1, 2, 3, 4];
 const sexList = ["male", "female"];
-const levelActivityList = ["1", "2", "3", "4", "5"];
+const levelActivityList = [1, 2, 3, 4, 5];
 
 const userSchema = new Schema(
   {
@@ -27,34 +27,42 @@ const userSchema = new Schema(
     },
     avatarURL: {
       type: String,
-      // required: true,
+
+      default: "",
     },
     height: {
       type: Number,
+      default: 150,
     },
     currentWeight: {
       type: Number,
+
+      default: 35,
     },
     desiredWeight: {
       type: Number,
+      default: 35,
     },
     birthday: {
-      type: Date,
+      type: String,
+      default: "",
     },
     blood: {
-      type: String,
+      type: Number,
+
       enum: bloodList,
+      default: 1,
     },
     bmr: {
       type: Number,
-      // default: 0,
+      default: 0,
     },
     sex: {
       type: String,
       enum: sexList,
     },
     levelActivity: {
-      type: String,
+      type: Number,
       enum: levelActivityList,
     },
     token: String,
@@ -84,13 +92,13 @@ const userSettingsSchema = Joi.object({
   desiredWeight: Joi.number().min(35).required(),
   birthday: Joi.string().required(),
 
-  blood: Joi.string()
+  blood: Joi.number()
     .valid(...bloodList)
     .required(),
   sex: Joi.string()
     .valid(...sexList)
     .required(),
-  levelActivity: Joi.string()
+  levelActivity: Joi.number()
     .valid(...levelActivityList)
     .required(),
 });
