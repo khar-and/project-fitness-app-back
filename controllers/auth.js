@@ -66,6 +66,7 @@ const login = async (req, res) => {
     user: {
       name,
       email,
+      // user:user,
     },
   });
 };
@@ -113,10 +114,8 @@ const setProfileSettings = async (req, res) => {
     ...req.body,
     bmr,
   });
-
-  res.status(200).json({
-    message: "Data saved successfully",
-  });
+  const user = await User.findOne({ _id });
+  res.status(200).json(user);
 };
 
 module.exports = {

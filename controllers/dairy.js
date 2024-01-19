@@ -2,7 +2,7 @@ const { ctrlWrapper } = require("../helpers");
 
 // Контролер додавання продукту
 const addProduct = async (req, res) => {
-  const { _id } = req.user;
+  const { _id, bmr } = req.user;
   const { productId, date, amount, calories } = req.body;
 
   res.json({
@@ -11,6 +11,7 @@ const addProduct = async (req, res) => {
     date,
     amount,
     calories,
+    bmr,
   });
 };
 
