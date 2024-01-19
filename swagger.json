@@ -446,7 +446,7 @@
       "CurrentResponse": {
         "type": "object",
         "properties": {
-          "result": {
+          "user": {
             "type": "array",
             "items": {
               "typeof": ["string", "integer"]

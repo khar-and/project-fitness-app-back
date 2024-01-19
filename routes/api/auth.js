@@ -15,7 +15,7 @@ router.post(
   ctrl.setProfileSettings
 );
 router.post("/login", validateBody(schemas.loginSchema), ctrl.login);
-router.get("/current", authenticate, ctrl.getCurrent);
+router.get("/current", authenticate, authenticate, ctrl.getCurrent);
 router.post("/logout", authenticate, ctrl.logout);
 router.patch("/avatars", authenticate, upload.single("avatar"), ctrl.addAvatar);
 

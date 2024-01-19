@@ -47,6 +47,7 @@ const userSchema = new Schema(
     },
     bmr: {
       type: Number,
+      // default: 0,
     },
     sex: {
       type: String,
@@ -77,6 +78,7 @@ const loginSchema = Joi.object({
 });
 
 const userSettingsSchema = Joi.object({
+  name: Joi.string().required(),
   height: Joi.number().min(150).required(),
   currentWeight: Joi.number().min(35).required(),
   desiredWeight: Joi.number().min(35).required(),
