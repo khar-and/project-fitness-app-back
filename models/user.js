@@ -60,10 +60,12 @@ const userSchema = new Schema(
     sex: {
       type: String,
       enum: sexList,
+      default: "male",
     },
     levelActivity: {
       type: Number,
       enum: levelActivityList,
+      default: 1,
     },
     token: String,
   },

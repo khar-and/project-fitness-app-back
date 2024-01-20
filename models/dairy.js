@@ -5,7 +5,7 @@ const Joi = require("joi");
 const addProductSchema = new Schema({
   userId: {
     type: String,
-    required: true,
+    // required: true,
   },
   date: {
     type: String,
@@ -20,8 +20,8 @@ const addProductSchema = new Schema({
     required: true,
   },
   productId: {
-    // type: String,
-    type: Schema.Types.ObjectId,
+    type: String,
+    // type: Schema.Types.ObjectId,
     ref: "product",
     required: true,
   },
@@ -40,9 +40,9 @@ const schemas = {
   productSchema,
 };
 
-const AddProduct = model("dairyProduct", addProductSchema);
+const ProductsDiary = model("dairyProduct", addProductSchema);
 
 module.exports = {
-  AddProduct,
+  ProductsDiary,
   schemas,
 };
