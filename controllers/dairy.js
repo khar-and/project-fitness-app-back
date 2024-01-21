@@ -1,5 +1,6 @@
 const { ctrlWrapper, HttpError } = require("../helpers");
 const { ProductsDiary } = require("../models/dairy");
+const { Product } = require("../models/product");
 
 // Контролер додавання продукту
 // 1. Робоча схема - якщо користувач в дайрі обирає два однакових продукта, але з різними значеннями грамів, то показники грамів та калорій додаються і в дайрі відображається тільки один документ/продукт
@@ -18,9 +19,12 @@ const addProduct = async (req, res) => {
     date,
   });
   if (!isAlreadyProduct.length) {
+    const product = await Product.findById(productId); // Замість populete (getArchive)
+    console.log(product);
     const newProduct = await ProductsDiary.create({
       userId,
       ...req.body,
+      product,
     });
     res.status(201).json({ info: newProduct });
   } else {

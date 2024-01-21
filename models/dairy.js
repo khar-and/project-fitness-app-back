@@ -26,6 +26,9 @@ const addProductSchema = new Schema(
       // ref: "product",
       required: true,
     },
+    product: {
+      type: Object,
+    },
   },
   { versionKey: false }
 );
