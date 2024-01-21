@@ -2,30 +2,33 @@ const { Schema, model } = require("mongoose");
 const handleMongooseError = require("../helpers/handleMongooseError");
 const Joi = require("joi");
 
-const addProductSchema = new Schema({
-  userId: {
-    type: String,
-    // required: true,
+const addProductSchema = new Schema(
+  {
+    userId: {
+      type: String,
+      // required: true,
+    },
+    date: {
+      type: String,
+      required: true,
+    },
+    amount: {
+      type: Number,
+      required: true,
+    },
+    calories: {
+      type: Number,
+      required: true,
+    },
+    productId: {
+      type: String,
+      // type: Schema.Types.ObjectId,
+      // ref: "product",
+      required: true,
+    },
   },
-  date: {
-    type: String,
-    required: true,
-  },
-  amount: {
-    type: Number,
-    required: true,
-  },
-  calories: {
-    type: Number,
-    required: true,
-  },
-  productId: {
-    type: String,
-    // type: Schema.Types.ObjectId,
-    ref: "product",
-    required: true,
-  },
-});
+  { versionKey: false }
+);
 
 addProductSchema.post("save", handleMongooseError);
 

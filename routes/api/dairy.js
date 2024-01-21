@@ -5,6 +5,7 @@ const { schemas } = require("../../models/dairy");
 
 const router = express.Router();
 
+router.get("/archive", authenticate, ctrl.getArchive);
 router.post(
   "/addProduct",
   authenticate,

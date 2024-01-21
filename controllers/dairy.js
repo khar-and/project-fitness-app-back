@@ -4,7 +4,6 @@ const { ProductsDiary } = require("../models/dairy");
 // Контролер додавання продукту
 // 1. Робоча схема - якщо користувач в дайрі обирає два однакових продукта, але з різними значеннями грамів, то показники грамів та калорій додаються і в дайрі відображається тільки один документ/продукт
 // 2. Альтернатива (треба прибрати блок else і не використовувати isAlreadyProduct) - якщо користувач обирає однакові за назвою продукти і вони в дейрі відображаються окремими позиціями.
-
 const addProduct = async (req, res) => {
   const { _id } = req.user;
   const userId = _id;
@@ -47,8 +46,29 @@ const delProduct = async (req, res) => {
   }
   res.status(201).json({ message: "Product deleted from Dairy" });
 };
+// Контролер отримання інформації по даті (продукти та вправи)
+const getArchive = async (req, res) => {
+  const { date } = req.query; // отримуємо дату з запиту
+  const { _id } = req.user;
+  const userId = _id; // Отримаємо user Id
+
+  // Перевіряємо чи введені параметри запиту
+  if (Object.keys(req.query).length < 1) {
+    throw HttpError(404, "Not Found, enter the date!");
+  }
+
+  // Витрачені калорії
+  const consumedProducts = await ProductsDiary.find({ userId, date });
+  const consumedCalories = consumedProducts.reduce(
+    (sum, item) => sum + item.calories,
+    0
+  );
+
+  res.status(201).json({ consumedCalories, consumedProducts });
+};
 
 module.exports = {
   addProduct: ctrlWrapper(addProduct),
   delProduct: ctrlWrapper(delProduct),
+  getArchive: ctrlWrapper(getArchive),
 };
