@@ -33,7 +33,39 @@ const addProductSchema = new Schema(
   { versionKey: false }
 );
 
+const addExerciseSchema = new Schema(
+  {
+    userId: {
+      type: String,
+      // required: true,
+    },
+    date: {
+      type: String,
+      required: true,
+    },
+    time: {
+      type: Number,
+      required: true,
+    },
+    calories: {
+      type: Number,
+      required: true,
+    },
+    exerciseId: {
+      type: String,
+      // type: Schema.Types.ObjectId,
+      // ref: "product",
+      required: true,
+    },
+    exercise: {
+      type: Object,
+    },
+  },
+  { versionKey: false }
+);
+
 addProductSchema.post("save", handleMongooseError);
+addExerciseSchema.post("save", handleMongooseError);
 
 const productSchema = Joi.object({
   productId: Joi.string().required(),
@@ -42,13 +74,23 @@ const productSchema = Joi.object({
   calories: Joi.number().min(1).required(),
 });
 
+const exerciseSchema = Joi.object({
+  exerciseId: Joi.string().required(),
+  date: Joi.string().required(),
+  time: Joi.number().min(1).required(),
+  calories: Joi.number().min(1).required(),
+});
+
 const schemas = {
   productSchema,
+  exerciseSchema,
 };
 
 const ProductsDiary = model("dairyProduct", addProductSchema);
+const ExercisesDairy = model("dairyExercises", addExerciseSchema);
 
 module.exports = {
   ProductsDiary,
+  ExercisesDairy,
   schemas,
 };
