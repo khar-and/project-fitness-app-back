@@ -113,7 +113,20 @@ const getArchive = async (req, res) => {
     0
   );
 
-  res.status(201).json({ consumedCalories, consumedProducts });
+  const exercisesDone = await ExercisesDairy.find({ userId, date });
+  const consumedBurned = exercisesDone.reduce(
+    (sum, item) => sum + item.calories,
+    0
+  );
+  const spentTime = exercisesDone.reduce((sum, item) => sum + item.time, 0);
+
+  res.status(201).json({
+    consumedCalories,
+    consumedBurned,
+    spentTime,
+    consumedProducts,
+    exercisesDone,
+  });
 };
 
 module.exports = {
