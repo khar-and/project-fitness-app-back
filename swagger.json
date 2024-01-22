@@ -81,7 +81,7 @@
         "tags": ["User"],
         "summary": "User login",
         "parameters": [],
-        "security": [{ "Bearer": [] }],
+        "security": [],
         "requestBody": {
           "description": "Login's object",
           "required": true,
@@ -195,6 +195,43 @@
         "responses": {
           "200": {
             "description": "Logout"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/dairy/addProduct": {
+      "post": {
+        "tags": ["Dairy"],
+        "summary": "Add products in Dairy",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Information object about product",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/addProductRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Added successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddProductResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
           },
           "401": {
             "description": "Unauthorized"
@@ -392,6 +429,28 @@
           }
         }
       },
+      "addProductRequest": {
+        "type": "object",
+        "required": ["productId", "date", "amount", "calories"],
+        "properties": {
+          "productId": {
+            "type": "String",
+            "example": "5d51694902b2373622ff590d"
+          },
+          "date": {
+            "type": "String",
+            "example": "2024-01-17T13:57:32.000Z"
+          },
+          "amount": {
+            "type": "integer",
+            "example": 80
+          },
+          "calories": {
+            "type": "integer",
+            "example": "154"
+          }
+        }
+      },
       "RegistrationResponse": {
         "type": "object",
         "properties": {
@@ -533,6 +592,49 @@
             "time": {
               "type": "integer",
               "example": 3
+            }
+          }
+        }
+      },
+      "AddProductResponse": {
+        "type": "object",
+        "properties": {
+          "info": {
+            "type": "object",
+            "properties": {
+              "_Id": {
+                "type": "String",
+                "example": "65ae74b81573eb6570a53744",
+                "description": "Id number of product in DB dairyProducts"
+              },
+              "userId": {
+                "type": "String",
+                "example": "65ae2f7de3f3405eb38c02e1"
+              },
+              "date": {
+                "type": "String",
+                "example": "2024-01-17T13:57:32.000Z"
+              },
+              "amount": {
+                "type": "integer",
+                "example": 150
+              },
+              "calories": {
+                "type": "integer",
+                "example": 100
+              },
+              "productId": {
+                "type": "String",
+                "example": "5d51694902b2373622ff590d",
+                "description": "Id number of product in DB products"
+              },
+              "product": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "description": "Info about selected products"
+                }
+              }
             }
           }
         }
