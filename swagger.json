@@ -26,7 +26,7 @@
     },
     {
       "name": "Dairy",
-      "description": "НЕ ПРАЦЮЄ і НЕ ОПИСАНО"
+      "description": "Saving the product that was consumed by the user, saving the exercise that was performed by the user, their deletion and receiving information about the consumed products and exercises performed by the user for the selected date"
     },
     {
       "name": "Exercises",
@@ -186,22 +186,7 @@
         }
       }
     },
-    "/api/users/logout": {
-      "post": {
-        "tags": ["User"],
-        "summary": "User logout",
-        "parameters": [],
-        "security": [{ "Bearer": [] }],
-        "responses": {
-          "200": {
-            "description": "Logout"
-          },
-          "401": {
-            "description": "Unauthorized"
-          }
-        }
-      }
-    },
+
     "/api/dairy/addProduct": {
       "post": {
         "tags": ["Dairy"],
@@ -232,6 +217,139 @@
           },
           "400": {
             "description": "Bad request (invalid request body)"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/dairy/addExercise": {
+      "post": {
+        "tags": ["Dairy"],
+        "summary": "Add exercise in Dairy",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Information object about exercise",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/addExerciseRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Added successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddExerciseResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/dairy/delProduct": {
+      "delete": {
+        "tags": ["Dairy"],
+        "summary": "Delete product",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "productId",
+            "required": true,
+            "type": "string",
+            "description": "product Id in DB dairyProducts"
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+
+        "responses": {
+          "201": {
+            "description": "Deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/delProductsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/exercises/delExercise": {
+      "delete": {
+        "tags": ["Dairy"],
+        "summary": "Delete exercise",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "exerciseId",
+            "required": true,
+            "type": "string",
+            "description": "exercise Id in DB dairyExercises"
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+
+        "responses": {
+          "201": {
+            "description": "Deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/delExercisesResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/dairy/archive": {
+      "get": {
+        "tags": ["Dairy"],
+        "summary": "Get info about products and exercises",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "date",
+            "required": true,
+            "type": "string",
+            "description": "2024-01-17T13:57:32.000Z"
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+
+        "responses": {
+          "201": {
+            "description": " Successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArchiveResponse"
+                }
+              }
+            }
           },
           "401": {
             "description": "Unauthorized"
@@ -451,6 +569,29 @@
           }
         }
       },
+      "addExerciseRequest": {
+        "type": "object",
+        "required": ["exerciseId", "date", "time", "calories"],
+        "properties": {
+          "productId": {
+            "type": "String",
+            "example": "5d51694902b2373622ff590d"
+          },
+          "date": {
+            "type": "String",
+            "example": "2024-01-17T13:57:32.000Z"
+          },
+          "time": {
+            "type": "integer",
+            "example": 2
+          },
+          "calories": {
+            "type": "integer",
+            "example": "154"
+          }
+        }
+      },
+
       "RegistrationResponse": {
         "type": "object",
         "properties": {
@@ -629,12 +770,98 @@
                 "description": "Id number of product in DB products"
               },
               "product": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "description": "Info about selected products"
-                }
+                "type": "object",
+                "description": "Info about selected products"
               }
+            }
+          }
+        }
+      },
+      "AddExerciseResponse": {
+        "type": "object",
+        "properties": {
+          "info": {
+            "type": "object",
+            "properties": {
+              "_Id": {
+                "type": "String",
+                "example": "65ae74b81573eb6570a53744",
+                "description": "Id number of exircise in DB dairyExercises"
+              },
+              "userId": {
+                "type": "String",
+                "example": "65ae2f7de3f3405eb38c02e1"
+              },
+              "date": {
+                "type": "String",
+                "example": "2024-01-17T13:57:32.000Z"
+              },
+              "time": {
+                "type": "integer",
+                "example": 3
+              },
+              "calories": {
+                "type": "integer",
+                "example": 250
+              },
+              "exerciseId": {
+                "type": "String",
+                "example": "5d51694902b2373622ff590d",
+                "description": "Id number of exercise in DB exercises"
+              },
+              "exercise": {
+                "type": "object",
+                "description": "Info about selected exercise"
+              }
+            }
+          }
+        }
+      },
+      "delProductsResponse": {
+        "type": "object",
+        "required": [],
+        "properties": {
+          "message": {
+            "type": "String",
+            "example": "Product deleted from Dairy"
+          }
+        }
+      },
+      "delExercisesResponse": {
+        "type": "object",
+        "required": [],
+        "properties": {
+          "message": {
+            "type": "String",
+            "example": "Exercise deleted from Dairy"
+          }
+        }
+      },
+      "ArchiveResponse": {
+        "type": "object",
+        "properties": {
+          "consumedCalories": {
+            "type": "integer",
+            "example": 200
+          },
+          "consumedBurned": {
+            "type": "integer",
+            "example": 495
+          },
+          "spentTime": {
+            "type": "integer",
+            "example": 8
+          },
+          "consumedProducts": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "exercisesDone": {
+            "type": "array",
+            "items": {
+              "type": "object"
             }
           }
         }
