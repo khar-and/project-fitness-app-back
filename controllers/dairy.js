@@ -112,7 +112,7 @@ const getArchive = async (req, res) => {
     (sum, item) => sum + item.calories,
     0
   );
-
+  // Показники розділу Exercises
   const exercisesDone = await ExercisesDairy.find({ userId, date });
   const consumedBurned = exercisesDone.reduce(
     (sum, item) => sum + item.calories,
