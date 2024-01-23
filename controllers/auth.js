@@ -29,14 +29,11 @@ const register = async (req, res) => {
   };
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "23d" });
   await User.findByIdAndUpdate(newUser._id, { token });
+  const visibleUser = await User.find(newUser._id, "-password");
 
   res.status(201).json({
     token,
-    user: newUser,
-    // user: {
-    //   name: newUser.name,
-    //   email: newUser.email,
-    // },
+    user: visibleUser,
   });
 };
 
@@ -60,15 +57,10 @@ const login = async (req, res) => {
 
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "23d" });
   await User.findByIdAndUpdate(user._id, { token });
-
-  // const { name } = user;
+  const visibleUser = await User.find(user._id, "-token -password");
   res.json({
     token,
-    // user: {
-    //   name,
-    //   email,
-    user: user,
-    // },
+    user: visibleUser,
   });
 };
 
@@ -111,9 +103,11 @@ const addAvatar = async (req, res) => {
 const setProfileSettings = async (req, res) => {
   const { _id } = req.user;
   const bmr = Math.floor(calcBMR(req.body));
+  const dailyPhysicalActivity = 110;
   await User.findByIdAndUpdate(_id, {
     ...req.body,
     bmr,
+    dailyPhysicalActivity,
   });
   const user = await User.findOne({ _id });
   res.status(200).json(user);

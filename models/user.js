@@ -45,7 +45,7 @@ const userSchema = new Schema(
       // type: String,
       // default: "",
       type: Date,
-      // default: "00.00.0000",
+      default: 1 / 1 / 2006,
     },
     blood: {
       type: Number,
@@ -54,7 +54,11 @@ const userSchema = new Schema(
     },
     bmr: {
       type: Number,
-      default: 2200,
+      default: 0,
+    },
+    dailyPhysicalActivity: {
+      type: Number,
+      default: 0,
     },
     sex: {
       type: String,

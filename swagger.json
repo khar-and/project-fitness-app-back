@@ -611,11 +611,6 @@
                 "description": "User's email",
                 "format": "email"
               },
-              "password": {
-                "type": "string",
-                "description": "User's password",
-                "example": "$2b$10$V6cMqgaLpKmfMo5olZCEquLhmFSas0YkaUJKaAfxGhQtQxxeureIK"
-              },
               "avatarURL": {
                 "type": "string",
                 "description": "User's foto link",
@@ -649,6 +644,11 @@
               "bmr": {
                 "type": "integer",
                 "description": "User's current weight",
+                "example": 0
+              },
+              "dailyPhysicalActivity": {
+                "type": "integer",
+                "description": "User's daily activity",
                 "example": 0
               },
               "sex": {
