@@ -6,7 +6,6 @@ const addProductSchema = new Schema(
   {
     userId: {
       type: String,
-      // required: true,
     },
     date: {
       type: String,
@@ -22,8 +21,7 @@ const addProductSchema = new Schema(
     },
     productId: {
       type: String,
-      // type: Schema.Types.ObjectId,
-      // ref: "product",
+
       required: true,
     },
     product: {
@@ -37,7 +35,6 @@ const addExerciseSchema = new Schema(
   {
     userId: {
       type: String,
-      // required: true,
     },
     date: {
       type: String,
@@ -53,8 +50,7 @@ const addExerciseSchema = new Schema(
     },
     exerciseId: {
       type: String,
-      // type: Schema.Types.ObjectId,
-      // ref: "product",
+
       required: true,
     },
     exercise: {

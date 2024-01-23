@@ -42,8 +42,6 @@ const userSchema = new Schema(
       default: 35,
     },
     birthday: {
-      // type: String,
-      // default: "",
       type: Date,
       default: 1 / 1 / 2006,
     },
