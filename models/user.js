@@ -45,7 +45,7 @@ const userSchema = new Schema(
       // type: String,
       // default: "",
       type: Date,
-      default: "00.00.0000",
+      // default: "00.00.0000",
     },
     blood: {
       type: Number,
