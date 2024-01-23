@@ -614,7 +614,56 @@
               "password": {
                 "type": "string",
                 "description": "User's password",
-                "example": "qwerty123"
+                "example": "$2b$10$V6cMqgaLpKmfMo5olZCEquLhmFSas0YkaUJKaAfxGhQtQxxeureIK"
+              },
+              "avatarURL": {
+                "type": "string",
+                "description": "User's foto link",
+                "example": ""
+              },
+              "height": {
+                "type": "integer",
+                "description": "User's height",
+                "example": 150
+              },
+              "currentWeight": {
+                "type": "integer",
+                "description": "User's current weight",
+                "example": 35
+              },
+              "desiredWeight": {
+                "type": "integer",
+                "description": "User's desire weight",
+                "example": 35
+              },
+              "birthday": {
+                "type": "string",
+                "description": "User's birthday",
+                "example": ""
+              },
+              "blood": {
+                "type": "integer",
+                "description": "User's group of blood",
+                "example": 1
+              },
+              "bmr": {
+                "type": "integer",
+                "description": "User's current weight",
+                "example": 0
+              },
+              "sex": {
+                "type": "string",
+                "example": "male"
+              },
+              "levelActivity": {
+                "type": "integer",
+                "description": "User's level activity",
+                "example": 1
+              },
+              "_id": {
+                "type": "string",
+                "description": "User's ID",
+                "example": "65af76d4f2af205b90bc8d7a"
               }
             }
           }

@@ -12,7 +12,7 @@ const userSchema = new Schema(
   {
     name: {
       type: String,
-      required: [true, "SName for user is required"],
+      required: [true, "Name for user is required"],
     },
     password: {
       type: String,
@@ -27,7 +27,6 @@ const userSchema = new Schema(
     },
     avatarURL: {
       type: String,
-
       default: "",
     },
     height: {
@@ -36,7 +35,6 @@ const userSchema = new Schema(
     },
     currentWeight: {
       type: Number,
-
       default: 35,
     },
     desiredWeight: {
@@ -44,18 +42,19 @@ const userSchema = new Schema(
       default: 35,
     },
     birthday: {
-      type: String,
-      default: "",
+      // type: String,
+      // default: "",
+      type: Date,
+      default: "00.00.0000",
     },
     blood: {
       type: Number,
-
       enum: bloodList,
       default: 1,
     },
     bmr: {
       type: Number,
-      default: 0,
+      default: 2200,
     },
     sex: {
       type: String,
@@ -74,35 +73,62 @@ const userSchema = new Schema(
 
 userSchema.post("save", handleMongooseError);
 
-// Створюємо Joi-схеми на реєстрацію та логін
-
+// Створюємо Joi-схеми на реєстрацію, логін та параметри користувача
 const registerSchema = Joi.object({
-  name: Joi.string().required(),
-  email: Joi.string().pattern(emailRegexp).required(),
-  password: Joi.string().min(6).required(),
+  name: Joi.string().required().messages({
+    "any.required": `The name field is required.`,
+  }),
+  email: Joi.string().pattern(emailRegexp).required().messages({
+    "any.required": `The email field is required.`,
+  }),
+  password: Joi.string().min(6).required().messages({
+    "any.required": `The password field is required.`,
+  }),
 });
 
 const loginSchema = Joi.object({
-  email: Joi.string().pattern(emailRegexp).required(),
-  password: Joi.string().min(6).required(),
+  email: Joi.string().pattern(emailRegexp).required().messages({
+    "any.required": `The email field is required.`,
+  }),
+  password: Joi.string().min(6).required().messages({
+    "any.required": `The password field is required.`,
+  }),
 });
 
 const userSettingsSchema = Joi.object({
-  name: Joi.string().required(),
-  height: Joi.number().min(150).required(),
-  currentWeight: Joi.number().min(35).required(),
-  desiredWeight: Joi.number().min(35).required(),
-  birthday: Joi.string().required(),
-
+  name: Joi.string().required().messages({
+    "any.required": `The name field is required.`,
+  }),
+  height: Joi.number().min(150).required().messages({
+    "any.required": `The height field is required.`,
+  }),
+  currentWeight: Joi.number().min(35).required().messages({
+    "any.required": `The current weight field is required.`,
+  }),
+  desiredWeight: Joi.number().min(35).required().messages({
+    "any.required": `The desired weight field is required.`,
+  }),
+  birthday: Joi.date().required().messages({
+    "any.required": `The birthday field is required.`,
+  }),
   blood: Joi.number()
     .valid(...bloodList)
-    .required(),
+    .required()
+    .messages({
+      "any.required": `The blood field is required.`,
+    }),
   sex: Joi.string()
     .valid(...sexList)
-    .required(),
+    .required()
+    .messages({
+      "any.required": `The sex field is required.`,
+    }),
   levelActivity: Joi.number()
     .valid(...levelActivityList)
-    .required(),
+    .required()
+    .messages({
+      "any.required": `The level activity field is required.`,
+    }),
 });
 
 const schemas = {
@@ -111,7 +137,6 @@ const schemas = {
   userSettingsSchema,
 };
 
-// Створюємо модель
 const User = model("user", userSchema);
 
 module.exports = {

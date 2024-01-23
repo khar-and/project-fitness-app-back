@@ -1,14 +1,14 @@
 const { Product } = require("../models/product");
 const { ctrlWrapper } = require("../helpers");
 const { filterProducts } = require("../helpers/filtersProducts");
-require("dotenv").configDotenv();
+// require("dotenv").configDotenv();
 
-const getAllProducts = async (req, res, next) => {
-  // const { keyword, category, variant } = req.query;
-  const result = await Product.find();
-  const count = await Product.find().countDocuments();
-  res.json({ result, count });
-};
+// const getAllProducts = async (req, res, next) => {
+//   // const { keyword, category, variant } = req.query;
+//   const result = await Product.find();
+//   const count = await Product.find().countDocuments();
+//   res.json({ result, count });
+// };
 
 const getProductsByBlood = async (req, res) => {
   const { allowed, category, query } = req.query;
@@ -21,6 +21,6 @@ const getProductsByBlood = async (req, res) => {
 };
 
 module.exports = {
-  getAllProducts: ctrlWrapper(getAllProducts),
+  // getAllProducts: ctrlWrapper(getAllProducts),
   getProductsByBlood: ctrlWrapper(getProductsByBlood),
 };
