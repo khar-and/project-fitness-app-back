@@ -51,7 +51,7 @@ const delProduct = async (req, res) => {
 // Контролер додавання вправи
 const addExercise = async (req, res) => {
   const { _id: userId } = req.user;
-  // const userId = _id;
+
   const { exerciseId, date, time, calories } = req.body;
   const worktime = time;
   const cal = calories;
@@ -98,7 +98,6 @@ const delExercise = async (req, res) => {
 const getArchive = async (req, res) => {
   const { date } = req.query; // отримуємо дату з запиту
   const { _id: userId } = req.user;
-  // const userId = _id; // Отримаємо user Id
 
   // Перевіряємо чи введені параметри запиту
   if (Object.keys(req.query).length < 1) {

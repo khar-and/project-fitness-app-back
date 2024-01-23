@@ -186,7 +186,43 @@
         }
       }
     },
-
+    "/api/users/avatars": {
+      "patch": {
+        "tags": ["Profile Settings"],
+        "summary": "User avatar",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Load image file",
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "file",
+                    "format": "form-data"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AvatarsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/dairy/addProduct": {
       "post": {
         "tags": ["Dairy"],
@@ -261,7 +297,7 @@
         }
       }
     },
-    "/api/dairy/delProduct": {
+    "/api/dairy/delProduct/{productId}": {
       "delete": {
         "tags": ["Dairy"],
         "summary": "Delete product",
@@ -293,7 +329,7 @@
         }
       }
     },
-    "/api/exercises/delExercise": {
+    "/api/dairy/delExercise/{exerciseId}": {
       "delete": {
         "tags": ["Dairy"],
         "summary": "Delete exercise",
@@ -432,7 +468,25 @@
       "get": {
         "tags": ["Products"],
         "summary": "Працює. Поки що через req.body. НЕ ОПИСАНО.",
-        "parameters": [],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "allowed",
+            "required": true,
+            "type": "string",
+            "description": "all/true/false"
+          },
+          {
+            "in": "query",
+            "name": "category",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "query",
+            "type": "string"
+          }
+        ],
         "security": [{ "Bearer": [] }],
         "responses": {
           "201": {
@@ -440,7 +494,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CategoriesResponse"
+                  "$ref": "#/components/schemas/BloodResponse"
                 }
               }
             }
@@ -577,7 +631,7 @@
         "type": "object",
         "required": ["exerciseId", "date", "time", "calories"],
         "properties": {
-          "productId": {
+          "exerciseId": {
             "type": "String",
             "example": "5d51694902b2373622ff590d"
           },
@@ -777,6 +831,16 @@
           "message": {
             "type": "string",
             "example": "Data saved successfully"
+          }
+        }
+      },
+      "AvatarsResponse": {
+        "type": "object",
+        "properties": {
+          "avatarURL": {
+            "type": "string",
+            "descroption": "Avatar added",
+            "example": "https://res.cloudinary.com/ddsdnzgiy/image/upload/v1705919981/avatars/1676295806139337963.png.png"
           }
         }
       },
@@ -988,6 +1052,61 @@
         "items": {
           "type": "string",
           "description": "List of categories"
+        }
+      },
+      "BloodResponse": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "groupBloodNotAllowed": {
+                  "type": "object",
+                  "properties": {
+                    "1": {
+                      "type": "boolean",
+                      "example": "true"
+                    },
+                    "2": {
+                      "type": "boolean",
+                      "example": "true"
+                    },
+                    "3": {
+                      "type": "boolean",
+                      "example": "false"
+                    },
+                    "4": {
+                      "type": "boolean",
+                      "example": "false"
+                    }
+                  }
+                },
+                "weight": {
+                  "type": "integer",
+                  "example": 100
+                },
+                "calories": {
+                  "type": "integer",
+                  "example": 257
+                },
+                "category": {
+                  "type": "string",
+                  "example": "dairy"
+                },
+                "title": {
+                  "type": "string",
+                  "example": "Processed cheese"
+                },
+                "_id": {
+                  "type": "string",
+                  "example": "5d51694902b2373622ff57d1",
+                  "description": "ID product in DB"
+                }
+              }
+            }
+          }
         }
       },
 
