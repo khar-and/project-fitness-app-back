@@ -7,8 +7,7 @@ const { Product } = require("../models/product");
 // 1. Робоча схема - якщо користувач в дайрі обирає два однакових продукта, але з різними значеннями грамів, то показники грамів та калорій додаються і в дайрі відображається тільки один документ/продукт
 // 2. Альтернатива (треба прибрати блок else і не використовувати isAlreadyProduct) - якщо користувач обирає однакові за назвою продукти і вони в дейрі відображаються окремими позиціями.
 const addProduct = async (req, res) => {
-  const { _id } = req.user;
-  const userId = _id;
+  const { _id: userId } = req.user;
   const { productId, date, amount, calories } = req.body;
   const gram = amount;
   const cal = calories;
@@ -51,8 +50,8 @@ const delProduct = async (req, res) => {
 
 // Контролер додавання вправи
 const addExercise = async (req, res) => {
-  const { _id } = req.user;
-  const userId = _id;
+  const { _id: userId } = req.user;
+  // const userId = _id;
   const { exerciseId, date, time, calories } = req.body;
   const worktime = time;
   const cal = calories;
@@ -98,8 +97,8 @@ const delExercise = async (req, res) => {
 // Контролер отримання інформації по даті (продукти та вправи)
 const getArchive = async (req, res) => {
   const { date } = req.query; // отримуємо дату з запиту
-  const { _id } = req.user;
-  const userId = _id; // Отримаємо user Id
+  const { _id: userId } = req.user;
+  // const userId = _id; // Отримаємо user Id
 
   // Перевіряємо чи введені параметри запиту
   if (Object.keys(req.query).length < 1) {

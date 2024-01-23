@@ -27,9 +27,9 @@ const register = async (req, res) => {
   const payload = {
     id: newUser._id,
   };
-  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "23d" });
+  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "23h" });
   await User.findByIdAndUpdate(newUser._id, { token });
-  const visibleUser = await User.find(newUser._id, "-password");
+  const visibleUser = await User.findOne(newUser._id, "-token -password");
 
   res.status(201).json({
     token,
@@ -57,7 +57,8 @@ const login = async (req, res) => {
 
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "23d" });
   await User.findByIdAndUpdate(user._id, { token });
-  const visibleUser = await User.find(user._id, "-token -password");
+  const visibleUser = await User.findOne(user._id, "-token -password");
+
   res.json({
     token,
     user: visibleUser,
@@ -66,15 +67,9 @@ const login = async (req, res) => {
 
 // Контролер Current
 const getCurrent = async (req, res) => {
-  const { email } = req.user;
-  const user = await User.findOne({ email });
-  if (!user) {
-    HttpError(404, "User not found");
-  }
-  console.log(user);
-  res.status(200).json({
-    user,
-  });
+  const user = req.user.toObject();
+  const { password, token, ...rest } = user;
+  res.status(200).json({ user: { ...rest } });
 };
 
 // Контролер Logout
