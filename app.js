@@ -10,6 +10,7 @@ const exerciseRouter = require("./routes/api/exercises.js");
 const productsRouter = require("./routes/api/products");
 const dairyRouter = require("./routes/api/dairy.js");
 const authRouter = require("./routes/api/auth");
+const statisticRouter = require("./routes/api/statistic.js");
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ app.use(logger(formatsLogger));
 app.use(cors());
 app.use(express.json());
 
+app.use("/api/statistic", statisticRouter);
 app.use("/api/users", authRouter);
 app.use("/api/dairy", dairyRouter);
 app.use("/api/exercises", exerciseRouter);

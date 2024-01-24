@@ -43,17 +43,30 @@ const userSchema = new Schema(
     },
     birthday: {
       type: Date,
-      // validate: {
-      //   validator: function (birthday) {
-      //     const dobArray = birthday.split("-");
-      //     const today = new Date();
-      //     const age = today.getFullYear() - dobArray[2];
-      //     return age >= 18;
-      //   },
-      //   message: "User must be 18 years old",
-      // },
-      default: 1 / 1 / 2006,
+      default: new Date(2000, 0, 1), // 1 січня 2000 року
+      validate: {
+        validator: function (birthday) {
+          const dobArray = birthday.toISOString().split("-");
+          const today = new Date();
+          const age = today.getFullYear() - dobArray[0];
+          return age >= 18;
+        },
+        message: "Користувачу має бути 18 років",
+      },
     },
+    // birthday: {
+    //   type: Date,
+    //   validate: {
+    //     validator: function (birthday) {
+    //       const dobArray = birthday.split("-");
+    //       const today = new Date();
+    //       const age = today.getFullYear() - dobArray[2];
+    //       return age >= 18;
+    //     },
+    //     message: "User must be 18 years old",
+    //   },
+    //   default: 1 / 1 / 2006,
+    // },
     blood: {
       type: Number,
       enum: bloodList,

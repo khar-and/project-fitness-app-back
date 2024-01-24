@@ -1,4 +1,3 @@
-// const { Filter } = require("../models/filter");
 const { ctrlWrapper } = require("../helpers");
 
 const getAllCategories = async (req, res, next) => {
