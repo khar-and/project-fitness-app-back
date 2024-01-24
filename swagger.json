@@ -35,6 +35,10 @@
     {
       "name": "Products",
       "description": "Returns all product categories existing in the database (DB) and all products that are allowed for consumption by his blood type or, on the contrary, prohibited."
+    },
+    {
+      "name": "Statistics",
+      "description": "Returns statistics"
     }
   ],
 
@@ -524,6 +528,32 @@
           },
           "401": {
             "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/statistic": {
+      "get": {
+        "tags": ["Statistics"],
+        "summary": "Obtaining statistical indicators on exercises and calories burned, registered users ...",
+        "parameters": [],
+        "security": [],
+        "responses": {
+          "201": {
+            "description": "Get statistical indicators",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatisticResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          },
+          "409": {
+            "description": "Email in use"
           }
         }
       }
@@ -1110,27 +1140,35 @@
         }
       },
 
-      "ExampleResponse": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "email": {
-              "type": "string",
-              "description": "User's email",
-              "format": "email"
-            },
-            "userId": {
-              "type": "number",
-              "description": "User's id",
-              "example": "32143232436545474"
-            }
+      "StatisticResponse": {
+        "type": "object",
+        "properties": {
+          "countVideos": {
+            "type": "integer",
+            "description": "of all training videos in the app",
+            "example": 1324
+          },
+          "totalBurnedCalories": {
+            "type": "integer",
+            "description": "of all training videos in the app",
+            "example": 8429
+          },
+          "countTotalUsers": {
+            "type": "integer",
+            "description": "of all training videos in the app",
+            "example": 80
+          },
+          "totalSpentTimeExercise": {
+            "type": "integer",
+            "description": "of all training videos in the app",
+            "example": 73
+          },
+          "totalExerciseDoneAllUsers": {
+            "type": "integer",
+            "description": "of all training videos in the app",
+            "example": 226
           }
-        },
-        "example": [
-          { "email": "1@gmail.com", "userId": "1" },
-          { "email": "2@gmail.com", "userId": "2" }
-        ]
+        }
       }
     },
     "securitySchemes": {
