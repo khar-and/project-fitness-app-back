@@ -43,15 +43,15 @@ const userSchema = new Schema(
     },
     birthday: {
       type: Date,
-      validate: {
-        validator: function (birthday) {
-          const dobArray = birthday.split("-");
-          const today = new Date();
-          const age = today.getFullYear() - dobArray[2];
-          return age >= 18;
-        },
-        message: "User must be 18 years old",
-      },
+      // validate: {
+      //   validator: function (birthday) {
+      //     const dobArray = birthday.split("-");
+      //     const today = new Date();
+      //     const age = today.getFullYear() - dobArray[2];
+      //     return age >= 18;
+      //   },
+      //   message: "User must be 18 years old",
+      // },
       default: 1 / 1 / 2006,
     },
     blood: {
