@@ -41,10 +41,10 @@
 
 ## The main functions of the application:
 
-- **Workout Diary** : Users can keep a diary of their workouts, recording exercises performed, workout time, and calories burned.
+- **User profile** : Each user has a personal profile with information. Calories are calculated according to the data entered by the user. It is possible to update user data, change photo and name.
 - **Food Diary** : The application allows you to keep a food log, indicating the meals and the number of calories consumed. You can also choose recommended products by blood type.
+- **Workout Diary** : Users can keep a diary of their workouts, recording exercises performed, workout time, and calories burned.
 - **Exercise List** : Users can select exercises from a list that covers different body parts, muscles and equipment.
-- **User profile** : Each user has a personal profile with information. Calories are calculated according to the data entered by the user.
 
   ## Technologies:
 
