@@ -65,14 +65,14 @@ addExerciseSchema.post("save", handleMongooseError);
 
 const productSchema = Joi.object({
   productId: Joi.string().required(),
-  date: Joi.date().required(),
+  date: Joi.string().required(),
   amount: Joi.number().min(1).required(),
   calories: Joi.number().min(1).required(),
 });
 
 const exerciseSchema = Joi.object({
   exerciseId: Joi.string().required(),
-  date: Joi.date().required(),
+  date: Joi.string().required(),
   time: Joi.number().min(1).required(),
   calories: Joi.number().min(1).required(),
 });
